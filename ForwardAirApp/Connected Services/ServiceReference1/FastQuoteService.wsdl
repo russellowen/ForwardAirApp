@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tns="http://webservices.shipmentbooking.forwardair.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="FastQuoteService" targetNamespace="http://webservices.shipmentbooking.forwardair.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" targetNamespace="http://webservices.shipmentbooking.forwardair.com/" version="1.0">
+      <xs:element name="getQuote" type="tns:getQuote" />
+      <xs:element name="getQuoteResponse" type="tns:getQuoteResponse" />
+      <xs:complexType name="getQuote">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="user" type="xs:string" />
+          <xs:element minOccurs="0" name="password" type="xs:string" />
+          <xs:element minOccurs="0" name="customerId" type="xs:string" />
+          <xs:element minOccurs="0" name="quoteRequest" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getQuoteResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:faQuoteResponse" />
+        </xs:sequence>
+      </xs:complexType>
+    </xsd:schema>
+    <xsd:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://webservices.shipmentbooking.forwardair.com/" version="1.0">
+      <xs:element name="FAQuoteResponse" type="tns:faQuoteResponse" />
+      <xs:complexType name="faQuoteResponse">
+        <xs:sequence>
+          <xs:element name="BillToCustomerNumber" type="xs:integer" />
+          <xs:element name="ShipperCustomerNumber" type="xs:integer" />
+          <xs:element name="OriginAirportCode" type="xs:string" />
+          <xs:element name="OriginZipCode" type="xs:string" />
+          <xs:element name="DestinationAirportCode" type="xs:string" />
+          <xs:element name="DestinationZipCode" type="xs:string" />
+          <xs:element minOccurs="0" name="Volume" type="xs:decimal" />
+          <xs:element minOccurs="0" name="VolumeType" type="tns:VolumetUnitType" />
+          <xs:element minOccurs="0" name="Dimensions" type="tns:Dimensions" />
+          <xs:element minOccurs="0" name="FreightDetails" type="tns:FreightDetails" />
+          <xs:element name="Hazmat" type="tns:YNType" />
+          <xs:element name="InBondShipment" type="tns:YNType" />
+          <xs:element name="DeclaredValue" type="xs:decimal" />
+          <xs:element name="QuoteDate" type="xs:date" />
+          <xs:element name="QuoteTotal" type="xs:decimal" />
+          <xs:element name="TotalWeight" type="xs:decimal" />
+          <xs:element name="TransitDaysTotal" type="xs:positiveInteger" />
+          <xs:element name="ChargeLineItems" type="tns:ChargeLineItems" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Dimensions">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Dimension" type="tns:Dimension" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Dimension">
+        <xs:sequence>
+          <xs:element name="Pieces" type="xs:positiveInteger" />
+          <xs:element name="Length" type="xs:positiveInteger" />
+          <xs:element name="Width" type="xs:positiveInteger" />
+          <xs:element name="Height" type="xs:positiveInteger" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="FreightDetails">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="FreightDetail" type="tns:FreightDetail" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="FreightDetail">
+        <xs:sequence>
+          <xs:element name="FreightClass" type="xs:decimal" />
+          <xs:element name="Description" type="xs:string" />
+          <xs:element name="Pieces" type="xs:integer" />
+          <xs:element minOccurs="0" name="Weight" type="xs:decimal" />
+          <xs:element name="WeightType" type="tns:WeightUnitType" />
+          <xs:element name="WeightAdjusted" type="tns:YNType" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ChargeLineItems">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="ChargeLineItem" type="tns:ChargeLineItem" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ChargeLineItem">
+        <xs:sequence>
+          <xs:element name="Code" type="xs:string" />
+          <xs:element name="Description" type="xs:string" />
+          <xs:element name="Zone" type="xs:string" />
+          <xs:element name="ServiceLevel" type="xs:string" />
+          <xs:element name="Amount" type="xs:decimal" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="VolumetUnitType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="CI" />
+          <xs:enumeration value="CC" />
+          <xs:enumeration value="CF" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="WeightUnitType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="L" />
+          <xs:enumeration value="K" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="YNType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Y" />
+          <xs:enumeration value="N" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getQuote">
+    <wsdl:part name="parameters" element="tns:getQuote" />
+  </wsdl:message>
+  <wsdl:message name="getQuoteResponse">
+    <wsdl:part name="parameters" element="tns:getQuoteResponse" />
+  </wsdl:message>
+  <wsdl:portType name="FastQuoteService">
+    <wsdl:operation name="getQuote">
+      <wsdl:input name="getQuote" message="tns:getQuote" />
+      <wsdl:output name="getQuoteResponse" message="tns:getQuoteResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="FastQuoteServiceSoapBinding" type="tns:FastQuoteService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getQuote">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getQuote">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getQuoteResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="FastQuoteService">
+    <wsdl:port name="FastQuoteServicePort" binding="tns:FastQuoteServiceSoapBinding">
+      <soap:address location="https://localhost:8596/ltlservices/v2/FastQuoteService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
