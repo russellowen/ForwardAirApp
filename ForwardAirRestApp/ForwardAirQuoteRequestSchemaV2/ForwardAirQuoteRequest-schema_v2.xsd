@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Created with Liquid Studio (https://www.liquid-technologies.com)-->
+<xs:schema xmlns:wmh="http://www.wmhelp.com/2003/eGenerator"
+		   elementFormDefault="qualified"
+		   xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="FAQuoteRequest"
+			    type="FAQuoteRequest" />
+	<xs:complexType name="FAQuoteRequest">
+		<xs:sequence>
+			<xs:element name="BillToCustomerNumber"
+					    type="CustomerNumberType" />
+			<!-- Usually same as bill to -->
+			<xs:element name="ShipperCustomerNumber"
+					    type="CustomerNumberType" />
+			<xs:element name="Origin"
+					    type="Origin" />
+			<xs:element name="Destination"
+					    type="Destination" />
+			<xs:element name="Volume"
+					    type="xs:decimal"
+					    minOccurs="0" />
+			<xs:element name="VolumeType"
+					    type="VolumeUnitType"
+					    minOccurs="0" />
+			<!-- Use only one of FreightClass or list of FreightDetails -->
+			<!--  <xs:element name="FreightClass" type="FreightClassType" minOccurs="0"/> -->
+			<xs:element name="Dimensions"
+					    type="Dimensions"
+					    minOccurs="0" />
+			<xs:element name="FreightDetails"
+					    type="FreightDetails" />
+			<!-- Hazmat on linehaul only shipments.  Also currently not supported on webservice bookings -->
+			<xs:element name="Hazmat"
+					    type="YNType" />
+			<!-- Inbond quoting on linehaul only shipments.  Also currently only linehaul inbond supported on webservice bookings -->
+			<xs:element name="InBondShipment"
+					    type="YNType" />
+			<!-- Guaranteed Service request (if available)   -->
+			<xs:element name="GuaranteedService"
+					    type="YNType"
+					    minOccurs="0" />
+			<xs:element name="DeclaredValue"
+					    type="xs:decimal" />
+			<!-- ShippingDate is pickup date if Pickup being performed or drop off at station date if linehaul (no pickup).
+           Timezone not needed.  If no value is given, today's date will be used.  YYYY-MM-DD -->
+			<xs:element name="ShippingDate"
+					    type="xs:date" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Dimensions">
+		<xs:sequence>
+			<xs:element name="Dimension"
+					    type="Dimension"
+					    minOccurs="0"
+					    maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Dim unit currently must be in inches -->
+	<xs:complexType name="Dimension">
+		<xs:sequence>
+			<xs:element name="Pieces"
+					    type="xs:positiveInteger" />
+			<xs:element name="Length"
+					    type="xs:positiveInteger" />
+			<xs:element name="Width"
+					    type="xs:positiveInteger" />
+			<xs:element name="Height"
+					    type="xs:positiveInteger" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FreightDetails">
+		<xs:sequence>
+			<xs:element name="FreightDetail"
+					    type="FreightDetail"
+					    minOccurs="1"
+					    maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FreightDetail">
+		<xs:sequence>
+			<xs:element name="FreightClass"
+					    type="FreightClassType" />
+			<xs:element name="Description"
+					    type="xs:string" />
+			<xs:element name="Pieces"
+					    type="Pieces" />
+			<xs:element name="Weight"
+					    type="xs:decimal" />
+			<xs:element name="WeightType"
+					    type="WeightUnitType" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Origin">
+		<xs:sequence>
+			<!-- Origin Airport required for Airport Pickup or Linehaul (no pickup) -->
+			<xs:element name="OriginAirportCode"
+					    type="AirportCodeType" />
+			<!-- Origin zip required for non airport pickup -->
+			<xs:element name="OriginZipCode"
+					    type="StringLength10" />
+			<!-- Pickup.  Only include this segment if Pickup requested -->
+			<xs:element name="Pickup"
+					    type="Pickup"
+					    minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Destination">
+		<xs:sequence>
+			<!-- Destination Airport required for Airport Delivery or Linehaul (no delivery) -->
+			<xs:element name="DestinationAirportCode"
+					    type="AirportCodeType" />
+			<!-- Destination zip required for non Airport Delivery -->
+			<xs:element name="DestinationZipCode"
+					    type="StringLength10" />
+			<!-- Delivery. Only include this segment if Delivery requested -->
+			<xs:element name="Delivery"
+					    type="Delivery"
+					    minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Pickup">
+		<xs:sequence>
+			<xs:element name="AirportPickup"
+					    type="YNType" />
+			<xs:element name="PickupAccessorials"
+					    type="PickupAccessorials" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Delivery">
+		<xs:sequence>
+			<xs:element name="AirportDelivery"
+					    type="YNType" />
+			<xs:element name="DeliveryAccessorials"
+					    type="DeliveryAccessorials" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="CustomerNumberType">
+		<xs:restriction base="xs:positiveInteger">
+			<xs:totalDigits value="7" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AirportCodeType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="3" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="PickupAccessorials">
+		<xs:sequence>
+			<xs:element name="PickupAccessorial"
+					    type="PickupAccessorialType"
+					    maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DeliveryAccessorials">
+		<xs:sequence>
+			<xs:element name="DeliveryAccessorial"
+					    type="DeliveryAccessorialType"
+					    maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="PickupAccessorialType">
+		<xs:restriction base="xs:string">
+			<!-- Afternoon Special Pickup. -->
+			<xs:enumeration value="AFP" />
+			<!-- Airline Pickup.  -->
+			<xs:enumeration value="ALP" />
+			<!-- Pickup Appointment/Special.  Specify the appointment request hours in the pickup-pickup ready time and shipper close -->
+			<xs:enumeration value="APP" />
+			<!-- Check Convenience Fee -->
+			<xs:enumeration value="CCF" />
+			<!-- Convention Center Pickup -->
+			<xs:enumeration value="CCP" />
+			<!-- Pallet Exchange Pickup.  (Per wooden Skid; will be calculated once recovered) -->
+			<xs:enumeration value="CPX" />
+			<!-- Hotel Pickup -->
+			<xs:enumeration value="HOT" />
+			<!-- Hospital Pickup -->
+			<xs:enumeration value="HPC" />
+			<!-- Inside Pickup (Room of choice to the first floor only) -->
+			<xs:enumeration value="IPU" />
+			<!-- Liftgate Pickup -->
+			<xs:enumeration value="LGP" />
+			<!-- Military Base Pickup -->
+			<xs:enumeration value="MBP" />
+			<!-- Morning Special Pickup -->
+			<xs:enumeration value="MOP" />
+			<!-- Mall Pickup -->
+			<xs:enumeration value="MPC" />
+			<!-- Pallet Jack Pickup -->
+			<xs:enumeration value="PJP" />
+			<!-- Residential Pickup (will call shipper to arrange time and date -->
+			<xs:enumeration value="RPU" />
+			<!-- Two Hour Special Pickup -->
+			<xs:enumeration value="THP" />
+			<!-- University/college pickup -->
+			<xs:enumeration value="UNC" />
+			<!-- Weekend Pickup...Need this accessorial unlike the web -->
+			<xs:enumeration value="WEP" />
+			<!-- Extra Man Pickup (will be calculated after service performed.  costs vary) -->
+			<xs:enumeration value="XMP" />
+			<!-- After or Before hours pickup -->
+			<xs:enumeration value="XPU" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DeliveryAccessorialType">
+		<xs:restriction base="xs:string">
+			<!-- Delivery Appointment/special.  Specify the hours in the consignee open and close times -->
+			<xs:enumeration value="ADE" />
+			<!-- Afternoon Special Delivery -->
+			<xs:enumeration value="AFD" />
+			<!-- Airline Delivery -->
+			<xs:enumeration value="ALD" />
+			<!-- Convention Center Delivery -->
+			<xs:enumeration value="CCD" />
+			<!-- Pallet Exchange Delivery (Per wooden skid; will be calculated once recovered) -->
+			<xs:enumeration value="CPD" />
+			<!-- Debris Removal 1 (Shrink Wrap and Skid Only, Up to two skids; Cost vary After 2 )-->
+			<xs:enumeration value="DR1" />
+			<!-- Debris Removal 2 (Cardboard, Shrink Wrap, and Skid Only, Up to two skids; Cost vary after 2 )-->
+			<xs:enumeration value="DR2" />
+			<!-- Extra Man Delivery (which will be calculated after service is performed.  Costs vary) -->
+			<xs:enumeration value="EMD" />
+			<!-- Hospital Delivery -->
+			<xs:enumeration value="HDC" />
+			<!-- Hotel Delivery -->
+			<xs:enumeration value="HOD" />
+			<!-- Inside Delivery.  (Room of choice to the first floor only) -->
+			<xs:enumeration value="IDE" />
+			<!-- Liftgate Delivery -->
+			<xs:enumeration value="LGD" />
+			<!-- Military Base Delivery -->
+			<xs:enumeration value="MBD" />
+			<!-- Mall Delivery -->
+			<xs:enumeration value="MDC" />
+			<!-- Morning Special Delivery -->
+			<xs:enumeration value="MOD" />
+			<!-- Pallet Jack for Delivery -->
+			<xs:enumeration value="PJD" />
+			<!-- Residential Delivery (will call consignee to arrange time and date) -->
+			<xs:enumeration value="RDE" />
+			<!-- Residential Delivery, No call, No Signature -->
+			<xs:enumeration value="RDS" />
+			<!-- Two Hour Special Delivery -->
+			<xs:enumeration value="THD" />
+			<!-- University/College Delivery -->
+			<xs:enumeration value="UND" />
+			<!-- Unpack Delivery (Up to two skids; costs vary after 2, does not include crates) -->
+			<xs:enumeration value="UNP" />
+			<!-- Weekend Delivery...Need this accessorial unlike the web -->
+			<xs:enumeration value="WED" />
+			<!-- After or before hours delivery -->
+			<xs:enumeration value="XPD" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FreightClassType">
+		<xs:restriction base="xs:decimal">
+			<xs:enumeration value="50" />
+			<xs:enumeration value="55" />
+			<xs:enumeration value="60" />
+			<xs:enumeration value="65" />
+			<xs:enumeration value="70" />
+			<xs:enumeration value="77.5" />
+			<xs:enumeration value="85" />
+			<xs:enumeration value="92.5" />
+			<xs:enumeration value="100" />
+			<xs:enumeration value="110" />
+			<xs:enumeration value="125" />
+			<xs:enumeration value="150" />
+			<xs:enumeration value="200" />
+			<xs:enumeration value="250" />
+			<xs:enumeration value="300" />
+			<xs:enumeration value="400" />
+			<xs:enumeration value="500" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Pieces">
+		<xs:restriction base="xs:positiveInteger">
+			<xs:maxInclusive value="999" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Weight">
+		<xs:restriction base="xs:positiveInteger">
+			<xs:minInclusive value="1" />
+			<xs:maxInclusive value="99999" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="WeightUnitType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="L" />
+			<xs:enumeration value="K" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Volume">
+		<xs:restriction base="xs:positiveInteger">
+			<xs:minInclusive value="1" />
+			<xs:maxInclusive value="99999" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VolumeUnitType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CI" />
+			<xs:enumeration value="CC" />
+			<xs:enumeration value="CF" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StringLength10">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="YNType"
+				   final="restriction">
+		<xs:annotation>
+			<xs:documentation>base type for 1 char Y/N</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:length value="1" />
+			<xs:enumeration value="Y" />
+			<xs:enumeration value="N" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

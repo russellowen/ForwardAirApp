@@ -9,9 +9,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="LiquidTechnologies.XmlObjects.Runtime" Version="20.3.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="System.Web.Services">
       <HintPath>..\..\..\..\Windows\Microsoft.NET\Framework64\v4.0.30319\System.Web.Services.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="ForwardAirQuoteRequest-schema_v2.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ForwardAirQuoteRequest-schema_v2.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ForwardAirQuoteRequest-schema_v2.xsd">
+      <Generator>LxCodeGenerator</Generator>
+      <LastGenOutput>ForwardAirQuoteRequest-schema_v2.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>

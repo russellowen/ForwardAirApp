@@ -1,0 +1,85 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net40;net45;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks Condition="'$(LibraryFrameworks)'!=''">$(LibraryFrameworks)</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.0</Version>
+    <Authors>Trial 09/05/2023</Authors>
+    <Description>An object model providing strongly typed classes that can be serialized/deserializsed to XML.</Description>
+    <RootNamespace>ForwardAirQuoteRequestSchemaV2</RootNamespace>
+    <DocumentationFile>LiquidXmlObjects.ForwardAirQuoteRequestSchemaV2.xml</DocumentationFile>
+    <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
+
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='net40'">
+    <AssemblyTitle>XML serialization class library. Runtime for .Net 4.0</AssemblyTitle>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
+    <AssemblyTitle>XML serialization class library. Runtime for .Net 4.5</AssemblyTitle>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <AssemblyTitle>XML serialization class library. Runtime for .NET Standard 2.0</AssemblyTitle>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
+    
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+    
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Runtime.Numerics" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.5.1" />
+    
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LiquidTechnologies.XmlObjects.Runtime" Version="20.3.0" />
+  </ItemGroup>
+
+  <!-- Requires XmlSchemaSet - which is in the .Net framework and standard 2.0 -->
+  <ItemGroup Condition="'$(TargetFramework)'=='net40' Or '$(TargetFramework)'=='net45' Or '$(TargetFramework)' == 'netstandard2.0'">
+    <EmbeddedResource Update="Schemas\SchemaData.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="ForwardAirQuoteRequest-schema_v2.cs">
+      <DesignTime>true</DesignTime>
+      <AutoGen>true</AutoGen>
+      <DependentUpon>ForwardAirQuoteRequest-schema_v2.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="ForwardAirQuoteRequest-schema_v2.xsd">
+      <Generator>LxCodeGenerator</Generator>
+      <LastGenOutput>ForwardAirQuoteRequest-schema_v2.cs</LastGenOutput>
+             <Lx-XsdValidationClassName>ForwardAirQuoteRequest_Schema_V2Validator</Lx-XsdValidationClassName>
+        <Lx-XsdValidationCodeFolder>ForwardAirQuoteRequest_Schema_V2Resources</Lx-XsdValidationCodeFolder>
+        <Lx-GenerationModel>Simple</Lx-GenerationModel>
+        <Lx-GenerateUnprocessedNodeHandlers>True</Lx-GenerateUnprocessedNodeHandlers>
+        <Lx-RaiseChangeEvents>False</Lx-RaiseChangeEvents>
+        <Lx-CollectionNaming>Pluralize</Lx-CollectionNaming>
+        <Lx-WriteDefaultValuesForOptionalAttributes>True</Lx-WriteDefaultValuesForOptionalAttributes>
+        <Lx-WriteDefaultValuesForOptionalElements>False</Lx-WriteDefaultValuesForOptionalElements>
+        <Lx-MixedContentHandling>TreatAsAny</Lx-MixedContentHandling>
+        <Lx-AllClassName>All</Lx-AllClassName>
+        <Lx-AllPropertyName>All</Lx-AllPropertyName>
+        <Lx-EmptyAnyElementNameValue></Lx-EmptyAnyElementNameValue>
+        <Lx-ChoiceClassName>Chc</Lx-ChoiceClassName>
+        <Lx-ChoicePropertyName>Chc</Lx-ChoicePropertyName>
+        <Lx-SequenceClassName>Seq</Lx-SequenceClassName>
+        <Lx-SequencePropertyName>Seq</Lx-SequencePropertyName>
+        <Lx-BaseClassName>LxBase</Lx-BaseClassName>
+        <CustomToolNamespace>ForwardAirQuoteRequestSchemaV2</CustomToolNamespace>
+        <Lx-GenerateCommonBaseClass>False</Lx-GenerateCommonBaseClass>
+        <Lx-GenerateXsdValidationCode>True</Lx-GenerateXsdValidationCode>
+        <Lx-NullableReferenceTypes>True</Lx-NullableReferenceTypes>
+    </None>
+  </ItemGroup>
+</Project>
