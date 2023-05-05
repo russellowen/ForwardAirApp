@@ -19,19 +19,4 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="ForwardAirQuoteRequest-schema_v2.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ForwardAirQuoteRequest-schema_v2.xsd</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="ForwardAirQuoteRequest-schema_v2.xsd">
-      <Generator>LxCodeGenerator</Generator>
-      <LastGenOutput>ForwardAirQuoteRequest-schema_v2.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-
 </Project>
